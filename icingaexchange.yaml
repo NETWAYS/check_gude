@@ -1,0 +1,19 @@
+name: 
+description: "file:///README.md"
+url: "https://www.netways.org/projects/plugins"
+tags: ~
+vendor: Netways
+target: Temperature
+type: Plugin
+license: gplv2
+releases: 
+  - 
+    name: 1.0
+    description: "1.0 Release"
+    files: 
+      - 
+        name: check_gude.pl
+        url: "file:///check_gude.pl"
+        description: none
+        checksum: bca53046d2f3b43058a17953e6ed34ed
+
