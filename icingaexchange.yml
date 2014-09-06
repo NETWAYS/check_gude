@@ -1,9 +1,9 @@
-name: 
+name: check_gude
 description: "file:///README.md"
 url: "https://www.netways.org/projects/plugins"
 tags: ~
-vendor: Netways
-target: Temperature
+vendor: Gude,NETWAYS
+target: Sensor 
 type: Plugin
 license: gplv2
 releases: 
