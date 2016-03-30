@@ -4,7 +4,7 @@
 
 =head1 COPYRIGHT
 
- 
+
 This software is Copyright (c) 2011 NETWAYS GmbH, Birger Schmidt
                                <support@netways.de>
 
@@ -65,7 +65,7 @@ use diagnostics; #mainly for debugging, to better understand the messages
 
 ##############################################################################
 # define and get the command line options.
-#   see the command line option guidelines at 
+#   see the command line option guidelines at
 #   http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOPTIONS
 
 my $PROGNAME = basename $0;
@@ -74,21 +74,21 @@ my $VERSION  = 1.0;
 # Instantiate Nagios::Plugin object (the 'usage' parameter is mandatory)
 my $p = Nagios::Plugin->new(
     usage => "Usage: %s [-t <timeout>]
-    -H|--host=<host name of the snmp device> 
-    -C|--community=<snmp community name> 
+    -H|--host=<host name of the snmp device>
+    -C|--community=<snmp community name>
     [ -h|--help ]
-    [ 
+    [
       [ -k|--key=<name of snmp key> ]
-      [ -w|--warning=<warning threshold> ]  
-      [ -c|--critical=<critical threshold> ] 
-      [ -l|--label=<label for this value> ]  
-      [ -u|--unit=<unit of measurement> ]  
-      [ -f|--factor=<correction factor for this value> ]  
+      [ -w|--warning=<warning threshold> ]
+      [ -c|--critical=<critical threshold> ]
+      [ -l|--label=<label for this value> ]
+      [ -u|--unit=<unit of measurement> ]
+      [ -f|--factor=<correction factor for this value> ]
     ]",
     version => $VERSION,
     shortname => " ",
-    blurb => 'This plugin will check SNMP values against the thresholds given on command line. 
-It and will output OK, WARNING or CRITICAL according to the specified thresholds.', 
+    blurb => 'This plugin will check SNMP values against the thresholds given on command line.
+It and will output OK, WARNING or CRITICAL according to the specified thresholds.',
 
     extra => "
 
@@ -114,7 +114,7 @@ may give you:
 expert sensor box 7212:  WARNING -  WARNING: Temp1=22.9° (w:15, c:25)
 
 And you can multiply it by a factor:
-$PROGNAME -H sensorbox -k Temp1 -w 15 -c 25 -u '' -f 1 
+$PROGNAME -H sensorbox -k Temp1 -w 15 -c 25 -u '' -f 1
 may give you:
 expert sensor box 7212:  CRITICAL -  CRITICAL: Temp1=229 (w:15, c:25)
 note: because there is a default factor of 0.1 for the temperature,
@@ -151,16 +151,16 @@ THRESHOLDs for -w and -c are specified 'min:max' or 'min:' or ':max'
 (or 'max'). If specified '\@min:max', a warning status will be generated
 if the count *is* inside the specified range.
 
-See more threshold examples at 
+See more threshold examples at
 http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
 
   Examples:
 
-  $PROGNAME -w 10 -c 18 Returns a 
+  $PROGNAME -w 10 -c 18 Returns a
   warning if the value is greater than 10,
   or a critical error if it is greater than 18.
 
-  $PROGNAME -w 10: -c 4: Returns a 
+  $PROGNAME -w 10: -c 4: Returns a
   warning if the value is less than 10,
   or a critical error if it is less than 4.
 
@@ -172,29 +172,29 @@ http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
 # usage, help, version, timeout and verbose are defined by default.
 
 $p->add_arg(
-    spec => 'host|H=s', 
-    help => "--host\n   hostname", 
-    default => undef, 
+    spec => 'host|H=s',
+    help => "--host\n   hostname",
+    default => undef,
     required => 1,
 );
 
 $p->add_arg(
-    spec => 'community|C=s', 
-    help => "--community\n   SNMP community (public)", 
-    default => "public", 
+    spec => 'community|C=s',
+    help => "--community\n   SNMP community (public)",
+    default => "public",
     required => 0,
 );
 
 $p->add_arg(
-    spec => 'snmpversion=s', 
-    help => "--snmpversion\n   SNMP version (1 or v2c)", 
-    default => "v2c", 
+    spec => 'snmpversion=s',
+    help => "--snmpversion\n   SNMP version (1 or v2c)",
+    default => "v2c",
     required => 0,
 );
 
 $p->add_arg(
     spec => 'key|k=s@',
-    help => 
+    help =>
 qq{-k, --key=STRING
    The key or name of the measurement to be checked.
    If omitted, a list of possible keys will be shown.},
@@ -204,7 +204,7 @@ qq{-k, --key=STRING
 
 $p->add_arg(
     spec => 'label|l=s@',
-    help => 
+    help =>
 qq{-l, --label=STRING
    A label for the measured key.
    If omitted, the name of the key will be used.},
@@ -214,7 +214,7 @@ qq{-l, --label=STRING
 
 $p->add_arg(
     spec => 'unit|u=s@',
-    help => 
+    help =>
 qq{-u, --unit=STRING
    A unit for the measured key.
    If omitted, a default will be used.},
@@ -224,7 +224,7 @@ qq{-u, --unit=STRING
 
 $p->add_arg(
     spec => 'factor|f=s@',
-    help => 
+    help =>
 qq{-f, --factor=STRING
    A factor for the value of the measured key.
    If omitted, a default will be used.},
@@ -234,7 +234,7 @@ qq{-f, --factor=STRING
 
 $p->add_arg(
     spec => 'warning|w=s@',
-    help => 
+    help =>
 qq{-w, --warning=INTEGER:INTEGER
    Minimum and maximum number of allowable result, outside of which a
    warning will be generated.  If omitted, no warning is generated.},
@@ -244,7 +244,7 @@ qq{-w, --warning=INTEGER:INTEGER
 
 $p->add_arg(
     spec => 'critical|c=s@',
-    help => 
+    help =>
 qq{-c, --critical=INTEGER:INTEGER
    Minimum and maximum number of allowable result, outside of which a
    critical alert will be generated.  If omitted, no alert is generated.},
@@ -253,37 +253,37 @@ qq{-c, --critical=INTEGER:INTEGER
 );
 
 $p->add_arg(
-    spec => 'short|s', 
-    help => "--short\n   shorten the output", 
-    default => undef, 
+    spec => 'short|s',
+    help => "--short\n   shorten the output",
+    default => undef,
     required => 0,
 );
 
 $p->add_arg(
-    spec => 'test', 
-    help => "--test\n   test - dont exit on errors", 
-    default => undef, 
+    spec => 'test',
+    help => "--test\n   test - dont exit on errors",
+    default => undef,
     required => 0,
 );
 
 $p->add_arg(
-    spec => 'result|r=s@', 
-    help => "--result\n   result - act as if the mesaured result for this key would be ...", 
-    default => undef, 
+    spec => 'result|r=s@',
+    help => "--result\n   result - act as if the mesaured result for this key would be ...",
+    default => undef,
     required => 0,
 );
 
 $p->add_arg(
-    spec => 'listoids', 
-    help => "--listoids\n   list all enterprise oids as read from device.", 
-    default => undef, 
+    spec => 'listoids',
+    help => "--listoids\n   list all enterprise oids as read from device.",
+    default => undef,
     required => 0,
 );
 
 $p->add_arg(
-    spec => 'list', 
-    help => "--list\n   list known enterprise oids as read from device.", 
-    default => undef, 
+    spec => 'list',
+    help => "--list\n   list known enterprise oids as read from device.",
+    default => undef,
     required => 0,
 );
 
@@ -323,7 +323,7 @@ unless ( defined $p->opts->critical ) {
     nagadd(UNKNOWN, "No critical limits given!");
 }
 
-if (defined $p->opts->key and defined $p->opts->warning and defined $p->opts->critical and 
+if (defined $p->opts->key and defined $p->opts->warning and defined $p->opts->critical and
     ((($#{$p->opts->key} + $#{$p->opts->warning})/2) != $#{$p->opts->critical}) ) {
         nagadd(UNKNOWN, "The number of key, warning and critical arguments differ!");
 }
@@ -344,72 +344,72 @@ if (defined $p->opts->key and defined $p->opts->factor and ($#{$p->opts->key} !=
 
 my $sysDescr = '';
 my %OIDS = (
-        '.1.3.6.1.2.1.1.1.0'                    =>  'sysDescr',                 # expert net control 2151
-        '.1.3.6.1.2.1.1.2.0'                    =>  'enterprise',               # .1.3.6.1.4.1.28507.18
-        '.1.3.6.1.4.1.28507.18'                 => {
-                # GUDEADS-ENC2101-MIB::enc2101 - expert net control 2151
-                '.1.3.6.1.4.1.28507.18.1.3.1.1.0'       => 'portNumber0',               # INTEGER: 1
-                '.1.3.6.1.4.1.28507.18.1.3.1.2.1.2.1'   => 'PortName1',                 # STRING: "Output 1"
-                '.1.3.6.1.4.1.28507.18.1.6.1.1.2.1'     => 'Temp1',                     # INTEGER: 153 10th of degree Celsius
-                '.1.3.6.1.4.1.28507.18.1.6.1.1.2.2'     => 'Temp2',                     # INTEGER: 168 10th of degree Celsius
-                '.1.3.6.1.4.1.28507.18.1.6.1.1.3.1'     => 'Hygro1',                    # INTEGER: 416 10th of percentage humidity
-                '.1.3.6.1.4.1.28507.18.1.6.1.1.3.2'     => 'Hygro2',                    # INTEGER: 389 10th of percentage humidity
-        },
-        '.1.3.6.1.4.1.28507.16'                 => {
-                # GUDEADS-ENC2102-MIB::enc2102 - expert sensor box 7212
-                '.1.3.6.1.4.1.28507.16.1.6.1.1.2.1'     => 'Temp1',                     # INTEGER: 163 10th of degree Celsius
-                '.1.3.6.1.4.1.28507.16.1.6.1.1.3.1'     => 'Hygro1',                    # INTEGER: 393 10th of percentage humidity
-        },
-	'.1.3.6.1.4.1.28507.31'                 => {
-                # GUDEADS-ENC2102-MIB::enc2101 - expert sensor box 7211-1
-                '.1.3.6.1.4.1.28507.31.1.6.1.1.2.1'     => 'Temp1',                     # INTEGER: 163 10th of degree Celsius
-        },
-        '.1.3.6.1.4.1.28507.15'                 => {
-                # GUDEADS-ENC2I2O-MIB::enc2i2o - expert net control 2i2o 2100/2150      
-                '.1.3.6.1.4.1.28507.15.1.2.1.0'         => 'portNumber0',               # INTEGER: 2
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.2.1'     => 'PortName1',                 # STRING: "Output1"
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.2.2'     => 'PortName2',                 # STRING: "Output2"
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.3.1'     => 'PortState1',                # INTEGER: off(0)
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.3.2'     => 'PortState2',                # INTEGER: off(0)
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.4.1'     => 'PortSwitchCount1',          # Counter32: 12
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.4.2'     => 'PortSwitchCount2',          # Counter32: 12
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.5.1'     => 'PortStartupMode1',          # INTEGER: off(0)
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.5.2'     => 'PortStartupMode2',          # INTEGER: off(0)
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.6.1'     => 'PortStartupDelay1',         # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.6.2'     => 'PortStartupDelay2',         # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.7.1'     => 'PortRepowerTime1',          # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.15.1.2.2.1.7.2'     => 'PortRepowerTime2',          # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.15.1.3.1.1.2.1'     => 'Input1',                    # INTEGER: lo(0)
-                '.1.3.6.1.4.1.28507.15.1.3.1.1.2.2'     => 'Input2',                    # INTEGER: lo(0)
-                '.1.3.6.1.4.1.28507.15.1.3.2.0'         => 'POE0',                      # INTEGER: 1 0 = no POE, 1 = POE available
-        },
-        '.1.3.6.1.4.1.28507.19'                 => {
-                # GUDEADS-EPC1100-MIB::epc1100 - Expert Power Control 1100            
-                '.1.3.6.1.4.1.28507.19.1.3.1.1.0'       => 'portNumber0',               # INTEGER: 1
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.2.1'   => 'PortName1',                 # STRING: "Power Port 1"
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.3.1'   => 'PortState1',                # INTEGER: on(1)
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.4.1'   => 'PortSwitchCount1',          # Counter32: 1
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.5.1'   => 'PortStartupMode1',          # INTEGER: on(1)
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.6.1'   => 'PortStartupDelay1',         # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.19.1.3.1.2.1.7.1'   => 'PortRepowerTime1',          # INTEGER: 0 seconds
-                '.1.3.6.1.4.1.28507.19.1.5.1.1.0'       => 'ActivePowerChan0',          # Gauge32: 1
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.2.1'   => 'ChanStatus1',               # INTEGER: 1
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.3.1'   => 'EnergyActive1',             # Gauge32: 2912 Wh
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.4.1'   => 'PowerActive1',              # Gauge32: 112 W
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.5.1'   => 'Current1',                  # Gauge32: 526 mA
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.6.1'   => 'Voltage1',                  # Gauge32: 227 V
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.7.1'   => 'Frequency1',                # Gauge32: 4995 0.01 hz
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.8.1'   => 'PowerFactor1',              # INTEGER: 939 0.001
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.9.1'   => 'Pangle1',                   # INTEGER: 0 0.1 degree
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.10.1'  => 'PowerApparent1',            # Gauge32: 119 VA
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.11.1'  => 'PowerReactive1',            # Gauge32: 0 VAR
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.12.1'  => 'EnergyReactive1',           # Gauge32: 1003 VARh
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.13.1'  => 'EnergyActiveResettable1',   # Gauge32: 833 Wh
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.14.1'  => 'EnergyReactiveResettable1', # Gauge32: 280 VARh
-                '.1.3.6.1.4.1.28507.19.1.5.1.2.1.15.1'  => 'ResetTime1',                # Gauge32: 30854 s
-                '.1.3.6.1.4.1.28507.19.1.6.1.1.2.1'     => 'Temp1',                     # INTEGER: -9999 0.1 degree Celsius
-                '.1.3.6.1.4.1.28507.19.1.6.1.1.3.1'     => 'Hygro1',                    # INTEGER: -9999 0.1 percent humidity
-        },
+    '.1.3.6.1.2.1.1.1.0'    => 'sysDescr',   # expert net control 2151
+    '.1.3.6.1.2.1.1.2.0'    => 'enterprise', # .1.3.6.1.4.1.28507.18
+    '.1.3.6.1.4.1.28507.18' => {
+        # GUDEADS-ENC2101-MIB::enc2101 - expert net control 2151
+        '.1.3.6.1.4.1.28507.18.1.3.1.1.0'     => 'portNumber0', # INTEGER: 1
+        '.1.3.6.1.4.1.28507.18.1.3.1.2.1.2.1' => 'PortName1',   # STRING: "Output 1"
+        '.1.3.6.1.4.1.28507.18.1.6.1.1.2.1'   => 'Temp1',       # INTEGER: 153 10th of degree Celsius
+        '.1.3.6.1.4.1.28507.18.1.6.1.1.2.2'   => 'Temp2',       # INTEGER: 168 10th of degree Celsius
+        '.1.3.6.1.4.1.28507.18.1.6.1.1.3.1'   => 'Hygro1',      # INTEGER: 416 10th of percentage humidity
+        '.1.3.6.1.4.1.28507.18.1.6.1.1.3.2'   => 'Hygro2',      # INTEGER: 389 10th of percentage humidity
+    },
+    '.1.3.6.1.4.1.28507.16' => {
+        # GUDEADS-ENC2102-MIB::enc2102 - expert sensor box 7212
+        '.1.3.6.1.4.1.28507.16.1.6.1.1.2.1' => 'Temp1',  # INTEGER: 163 10th of degree Celsius
+        '.1.3.6.1.4.1.28507.16.1.6.1.1.3.1' => 'Hygro1', # INTEGER: 393 10th of percentage humidity
+    },
+    '.1.3.6.1.4.1.28507.31' => {
+        # GUDEADS-ENC2102-MIB::enc2101 - expert sensor box 7211-1
+        '.1.3.6.1.4.1.28507.31.1.6.1.1.2.1' => 'Temp1', # INTEGER: 163 10th of degree Celsius
+    },
+    '.1.3.6.1.4.1.28507.15' => {
+        # GUDEADS-ENC2I2O-MIB::enc2i2o - expert net control 2i2o 2100/2150
+        '.1.3.6.1.4.1.28507.15.1.2.1.0'     => 'portNumber0',       # INTEGER: 2
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.2.1' => 'PortName1',         # STRING: "Output1"
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.2.2' => 'PortName2',         # STRING: "Output2"
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.3.1' => 'PortState1',        # INTEGER: off(0)
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.3.2' => 'PortState2',        # INTEGER: off(0)
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.4.1' => 'PortSwitchCount1',  # Counter32: 12
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.4.2' => 'PortSwitchCount2',  # Counter32: 12
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.5.1' => 'PortStartupMode1',  # INTEGER: off(0)
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.5.2' => 'PortStartupMode2',  # INTEGER: off(0)
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.6.1' => 'PortStartupDelay1', # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.6.2' => 'PortStartupDelay2', # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.7.1' => 'PortRepowerTime1',  # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.15.1.2.2.1.7.2' => 'PortRepowerTime2',  # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.15.1.3.1.1.2.1' => 'Input1',            # INTEGER: lo(0)
+        '.1.3.6.1.4.1.28507.15.1.3.1.1.2.2' => 'Input2',            # INTEGER: lo(0)
+        '.1.3.6.1.4.1.28507.15.1.3.2.0'     => 'POE0',              # INTEGER: 1 0 = no POE, 1 = POE available
+    },
+    '.1.3.6.1.4.1.28507.19' => {
+        # GUDEADS-EPC1100-MIB::epc1100 - Expert Power Control 1100
+        '.1.3.6.1.4.1.28507.19.1.3.1.1.0'      => 'portNumber0',               # INTEGER: 1
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.2.1'  => 'PortName1',                 # STRING: "Power Port 1"
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.3.1'  => 'PortState1',                # INTEGER: on(1)
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.4.1'  => 'PortSwitchCount1',          # Counter32: 1
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.5.1'  => 'PortStartupMode1',          # INTEGER: on(1)
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.6.1'  => 'PortStartupDelay1',         # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.19.1.3.1.2.1.7.1'  => 'PortRepowerTime1',          # INTEGER: 0 seconds
+        '.1.3.6.1.4.1.28507.19.1.5.1.1.0'      => 'ActivePowerChan0',          # Gauge32: 1
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.2.1'  => 'ChanStatus1',               # INTEGER: 1
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.3.1'  => 'EnergyActive1',             # Gauge32: 2912 Wh
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.4.1'  => 'PowerActive1',              # Gauge32: 112 W
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.5.1'  => 'Current1',                  # Gauge32: 526 mA
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.6.1'  => 'Voltage1',                  # Gauge32: 227 V
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.7.1'  => 'Frequency1',                # Gauge32: 4995 0.01 hz
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.8.1'  => 'PowerFactor1',              # INTEGER: 939 0.001
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.9.1'  => 'Pangle1',                   # INTEGER: 0 0.1 degree
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.10.1' => 'PowerApparent1',            # Gauge32: 119 VA
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.11.1' => 'PowerReactive1',            # Gauge32: 0 VAR
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.12.1' => 'EnergyReactive1',           # Gauge32: 1003 VARh
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.13.1' => 'EnergyActiveResettable1',   # Gauge32: 833 Wh
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.14.1' => 'EnergyReactiveResettable1', # Gauge32: 280 VARh
+        '.1.3.6.1.4.1.28507.19.1.5.1.2.1.15.1' => 'ResetTime1',                # Gauge32: 30854 s
+        '.1.3.6.1.4.1.28507.19.1.6.1.1.2.1'    => 'Temp1',                     # INTEGER: -9999 0.1 degree Celsius
+        '.1.3.6.1.4.1.28507.19.1.6.1.1.3.1'    => 'Hygro1',                    # INTEGER: -9999 0.1 percent humidity
+    },
 );
 
 my %OIDS_rev = reverse %OIDS;
@@ -449,7 +449,7 @@ alarm($p->opts->timeout);
 
 
 ##############################################################################
-# gather SNMP 
+# gather SNMP
 my ($session, $error) = Net::SNMP->session(
     -hostname   =>  $p->opts->host,
     -community  =>  $p->opts->community,
@@ -463,7 +463,7 @@ $result = $session->get_request(
                           $OIDS_rev{'enterprise'},
                         ]);
 if (!$result and !$p->opts->test) { nagexit(CRITICAL, "Failed to query device $p->{opts}->{host}!") };
- 
+
 my $baseoid = $result->{$OIDS_rev{'enterprise'}};
 $sysDescr   = $result->{$OIDS_rev{'sysDescr'}};
 
@@ -493,8 +493,8 @@ foreach my $oid (sort keys %$result) {
 
 ##############################################################################
 # put results in the result array (alter if wanted - i.e. multiply by factor)
-# put label in the label array 
-# put unit in the unit array 
+# put label in the label array
+# put unit in the unit array
 $index = 0;
 foreach my $key (@{$p->{opts}->{key}}) {
     no strict 'refs'; # allow tests on non existing keys
@@ -536,7 +536,7 @@ foreach my $key (@{$p->{opts}->{key}}) {
             }
         }
     }
-    # calc result using factor 
+    # calc result using factor
     if ($p->{opts}->{factor}[$index]) {
         $p->{opts}->{result}[$index] = $p->{opts}->{result}[$index] * $p->{opts}->{factor}[$index];
     }
@@ -557,10 +557,10 @@ foreach my $key (@{$p->{opts}->{key}}) {   # TODO for 0..array size
         # add output
         $p->add_message(
             $p->check_threshold($p->{opts}->{result}[$index]), # calc checkresult
-            "$p->{opts}->{label}[$index]=$p->{opts}->{result}[$index]$p->{opts}->{unit}[$index] (w:$p->{opts}->{warning}[$index], c:$p->{opts}->{critical}[$index])" 
-        ); 
+            "$p->{opts}->{label}[$index]=$p->{opts}->{result}[$index]$p->{opts}->{unit}[$index] (w:$p->{opts}->{warning}[$index], c:$p->{opts}->{critical}[$index])"
+        );
         # add perfdata
-        $p->add_perfdata( 
+        $p->add_perfdata(
             label => $p->{opts}->{label}[$index],
             value => $p->{opts}->{result}[$index],
             # no spaces in unit allowed - a unit with spaces is a description
