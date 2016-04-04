@@ -51,7 +51,7 @@ Nagios and the Nagios logo are registered trademarks of Ethan Galstad.
 =cut
 
 # use module
-use Nagios::Plugin;
+use Monitoring::Plugin;
 use Getopt::Long;
 use Pod::Usage;
 use Net::SNMP;
@@ -71,8 +71,8 @@ use diagnostics; #mainly for debugging, to better understand the messages
 my $PROGNAME = basename $0;
 my $VERSION  = 1.0;
 
-# Instantiate Nagios::Plugin object (the 'usage' parameter is mandatory)
-my $p = Nagios::Plugin->new(
+# Instantiate Monitoring::Plugin object (the 'usage' parameter is mandatory)
+my $p = Monitoring::Plugin->new(
     usage => "Usage: %s [-t <timeout>]
     -H|--host=<host name of the snmp device>
     -C|--community=<snmp community name>

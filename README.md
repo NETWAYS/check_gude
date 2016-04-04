@@ -14,5 +14,5 @@ Additionally you get all the values as performance data.
 
 ## Required Perl Libraries
 
-* Nagios::Plugin
+* Monitoring::Plugin
 * Net::SNMP
