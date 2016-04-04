@@ -69,7 +69,7 @@ use diagnostics; #mainly for debugging, to better understand the messages
 #   http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOPTIONS
 
 my $PROGNAME = basename $0;
-my $VERSION  = 1.0;
+my $VERSION  = 1.1;
 
 # Instantiate Monitoring::Plugin object (the 'usage' parameter is mandatory)
 my $p = Monitoring::Plugin->new(
