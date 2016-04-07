@@ -1,19 +1,27 @@
 name: check_gude
 description: "file:///README.md"
 url: "https://www.netways.org/projects/plugins"
-tags: ~
+tags: Net Control 2151,Sensor Box 7212,Net Control 2i2o,Power Control 1100,PDU Energy 8340
 vendor: Gude,NETWAYS
-target: Sensor 
+target: Sensor,PDU,Power
 type: Plugin
-license: gplv2
-releases: 
-  - 
+license: GPLv2
+releases:
+  -
     name: 1.0
     description: "1.0 Release"
-    files: 
-      - 
+    files:
+      -
         name: check_gude.pl
         url: "file:///check_gude.pl"
         description: none
         checksum: bca53046d2f3b43058a17953e6ed34ed
-
+  -
+    name: 1.1
+    description: "1.1 Release"
+    files:
+      -
+        name: check_gude.pl
+        url: "file:///check_gude.pl"
+        description: check_gude Icinga plugin
+        checksum: e5452d67955116c1ec2d5e4d1aee5729
