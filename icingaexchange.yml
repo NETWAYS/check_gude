@@ -3,7 +3,7 @@ description: "file:///README.md"
 url: "https://www.netways.org/projects/plugins"
 tags: Net Control 2151,Sensor Box 7212,Net Control 2i2o,Power Control 1100,PDU Energy 8340
 vendor: Gude,NETWAYS
-target: Sensor,PDU,Power
+target: Sensor
 type: Plugin
 license: GPLv2
 releases:
