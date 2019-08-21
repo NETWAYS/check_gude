@@ -7,10 +7,11 @@ Additionally you get all the values as performance data.
 ## Supported Devices
 
 * Expert Net Control 2151
-* Expert Sensor Box 7212
+* Expert Sensor Box 7212 / 7211
 * Expert Net Control 2i2o 2100/2150
 * Expert Power Control 1100
 * Expert PDU Energy 8340
+* Expert Net Control 2191 Series
 
 ## Required Perl Libraries
 
